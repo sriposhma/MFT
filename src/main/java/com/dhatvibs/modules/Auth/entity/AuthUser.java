@@ -23,5 +23,9 @@ public class AuthUser {
     private String password;
 
     @Enumerated(EnumType.STRING)
-    private Role role;
+    private Role role; 
+    
+    @Column(nullable = true)
+    private String location;
+
 }
