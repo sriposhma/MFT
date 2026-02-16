@@ -7,7 +7,6 @@ import jakarta.servlet.http.HttpSession;
 
 import com.dhatvibs.modules.Auth.dto.LoginRequestDto;
 import com.dhatvibs.modules.Auth.dto.ManagementRegisterRequestDto;
-import com.dhatvibs.modules.Auth.dto.RegisterRequestDto;
 import com.dhatvibs.modules.Auth.dto.TeamLeadRegisterRequestDto;
 import com.dhatvibs.modules.Auth.entity.Role;
 import com.dhatvibs.modules.Auth.service.AuthService;
@@ -19,19 +18,7 @@ public class AuthController {
     @Autowired
     private AuthService service;
 
-	/*
-	 * // TEAM LEAD REGISTER
-	 * 
-	 * @PostMapping("/teamlead/register") public String
-	 * registerTeamLead(@RequestBody RegisterRequestDto dto, HttpSession session) {
-	 * return service.register(dto, Role.TEAM_LEAD, session); }
-	 * 
-	 * // MANAGEMENT REGISTER
-	 * 
-	 * @PostMapping("/management/register") public String
-	 * registerManagement(@RequestBody RegisterRequestDto dto, HttpSession session)
-	 * { return service.register(dto, Role.MANAGEMENT, session); }
-	 */ 
+	
     
  // TEAM LEAD REGISTER
     @PostMapping("/teamlead/register")

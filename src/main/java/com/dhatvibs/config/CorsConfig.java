@@ -17,9 +17,9 @@ public class CorsConfig {
         CorsConfiguration configuration = new CorsConfiguration();
 
         configuration.setAllowedOrigins(Arrays.asList(
-                "http://localhost:3000",   // React
-                "http://localhost:4200"    // Angular
-        ));
+              //  "http://localhost:3000",   // React
+                //"http://localhost:4200"    // Angular
+        "*"));
 
         configuration.setAllowedMethods(Arrays.asList(
                 "GET", "POST", "PUT", "DELETE", "OPTIONS"

@@ -9,7 +9,6 @@ import jakarta.servlet.http.HttpSession;
 
 import com.dhatvibs.modules.Auth.dto.LoginRequestDto;
 import com.dhatvibs.modules.Auth.dto.ManagementRegisterRequestDto;
-import com.dhatvibs.modules.Auth.dto.RegisterRequestDto;
 import com.dhatvibs.modules.Auth.dto.TeamLeadRegisterRequestDto;
 import com.dhatvibs.modules.Auth.entity.AuthUser;
 import com.dhatvibs.modules.Auth.entity.Role;
@@ -31,72 +30,14 @@ public class AuthServiceImpl implements AuthService {
     
     private static final String PASSWORD_REGEX =
             "^(?=.*[a-z])(?=.*[A-Z])(?=.*\\d)(?=.*[@$!%*?&]).{8,}$";
+    
+    //@Autowired
+    //private TeamLeadRepository teamLeadRepository;
+
 
     
     
-	/*
-	 * @Override public String register(RegisterRequestDto dto, Role role,
-	 * HttpSession session) {
-	 * 
-	 * // Email validation if (!Pattern.matches(EMAIL_REGEX, dto.getEmail())) {
-	 * throw new RuntimeException("Email must be @dhatvibs.com only"); }
-	 * 
-	 * // Password match check if
-	 * (!dto.getPassword().equals(dto.getConfirmPassword())) { throw new
-	 * RuntimeException("Passwords do not match"); }
-	 * 
-	 * // Password validation if (!Pattern.matches(PASSWORD_REGEX,
-	 * dto.getPassword())) { throw new RuntimeException(
-	 * "Password must contain 6 characters with uppercase, lowercase, number & special character"
-	 * ); }
-	 * 
-	 * // Check existing user if (repository.existsByEmail(dto.getEmail())) { throw
-	 * new RuntimeException("User already registered"); }
-	 * 
-	 * AuthUser user = AuthUser.builder() .email(dto.getEmail())
-	 * .password(dto.getPassword()) // later you can encode .role(role) .build();
-	 * 
-	 * repository.save(user);
-	 * 
-	 * // Create HTTP Session session.setAttribute("USER_EMAIL", user.getEmail());
-	 * session.setAttribute("ROLE", user.getRole());
-	 * 
-	 * return "Registration successful"; }
-	 */  
-    
-	/*
-	 * @Override public String register(RegisterRequestDto dto, Role role,
-	 * HttpSession session) {
-	 * 
-	 * if (!Pattern.matches(EMAIL_REGEX, dto.getEmail())) { throw new
-	 * RuntimeException("Email must be @dhatvibs.com only"); }
-	 * 
-	 * if (!dto.getPassword().equals(dto.getConfirmPassword())) { throw new
-	 * RuntimeException("Passwords do not match"); }
-	 * 
-	 * if (!Pattern.matches(PASSWORD_REGEX, dto.getPassword())) { throw new
-	 * RuntimeException(
-	 * "Password must contain minimum 8 characters with uppercase, lowercase, number & special character"
-	 * ); }
-	 * 
-	 * if (repository.existsByEmail(dto.getEmail())) { throw new
-	 * RuntimeException("User already registered"); }
-	 * 
-	 * // 🔥 Location required only for TEAM_LEAD if (role == Role.TEAM_LEAD) { if
-	 * (dto.getLocation() == null || dto.getLocation().isBlank()) { throw new
-	 * RuntimeException("Location is required for Team Lead"); } }
-	 * 
-	 * AuthUser user = AuthUser.builder() .email(dto.getEmail())
-	 * .password(dto.getPassword()) .role(role) .location(role == Role.TEAM_LEAD ?
-	 * dto.getLocation() : null) .build();
-	 * 
-	 * repository.save(user);
-	 * 
-	 * session.setAttribute("USER_EMAIL", user.getEmail());
-	 * session.setAttribute("ROLE", user.getRole());
-	 * 
-	 * return "Registration successful"; }
-	 */ 
+	
     
     @Override
     public String registerTeamLead(TeamLeadRegisterRequestDto dto, HttpSession session) {
@@ -119,11 +60,24 @@ public class AuthServiceImpl implements AuthService {
                 .build();
 
         repository.save(user);
+        
+       // AuthUser savedUser = repository.save(user);
+
+		/*
+		 * // 🔥 CREATE TEAMLEAD ENTRY TeamLead teamLead = TeamLead.builder()
+		 * .name(savedUser.getEmail()) // or separate name field if available
+		 * .assignedTarget(0) // default target .authUser(savedUser) .build();
+		 * 
+		 * teamLeadRepository.save(teamLead);
+		 */
 
         session.setAttribute("USER_EMAIL", user.getEmail());
         session.setAttribute("ROLE", user.getRole());
+        session.setAttribute("USER_ID", user.getId());
 
-        return "Team Lead Registration successful";
+       // return "Team Lead Registration successful";
+        return "TeamLead Registration successful. SessionId: " + session.getId();
+
     }
     	
     
@@ -144,11 +98,14 @@ public class AuthServiceImpl implements AuthService {
                 .build();
 
         repository.save(user);
-
+        
+        session.setAttribute("USER_ID", user.getId());
         session.setAttribute("USER_EMAIL", user.getEmail());
         session.setAttribute("ROLE", user.getRole());
 
-        return "Management Registration successful";
+       // return "Management Registration successful";
+        return "Management Registration successful. SessionId: " + session.getId();
+
     }
 
 
@@ -169,10 +126,14 @@ public class AuthServiceImpl implements AuthService {
         }
 
         // Create HTTP Session
+        session.setAttribute("USER_ID", user.getId());
         session.setAttribute("USER_EMAIL", user.getEmail());
         session.setAttribute("ROLE", user.getRole());
 
-        return "Login successful";
+      //  return "Login successful";
+        
+        return "Login successful. SessionId: " + session.getId();
+
     }  
     
     
